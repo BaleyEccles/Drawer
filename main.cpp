@@ -194,16 +194,16 @@ void CreateBitImage(Image &Img) {
 
 
   Img.ImageToGreyScale();
-  Img.SaveImage("Images/Grey1.png");
+  Img.SaveImage("Output/Grey1.png");
 
   Convolution2D(Img, GaussianBlur);
-  Img.SaveImage("Images/Blur1.png");
+  Img.SaveImage("Output/Blur1.png");
   
   Convolution2D(Img, EdgeDetect);
-  Img.SaveImage("Images/EdgeDetect.png");
+  Img.SaveImage("Output/EdgeDetect.png");
 
   Img.ImageToEdgeBits(127);
-  Img.SaveImage("Images/EdgeBits.png");
+  Img.SaveImage("Output/EdgeBits.png");
 }
 
 
@@ -213,7 +213,7 @@ int main() {
   // Gets the edge bit image
   Image Img("Images/Spirited1.png");
   std::cout << Img.Channels << std::endl;
-  Img.SaveImage("Images/Input.png");
+  Img.SaveImage("Output/Input.png");
   CreateBitImage(Img);
 
   // Turn into a SVG
