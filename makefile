@@ -1,6 +1,6 @@
 
 build:
-	g++ main.cpp -g -Wall -o main
+	g++ src/main.cpp -g -Wall -o main
 clean:
 	rm -f main test
 
