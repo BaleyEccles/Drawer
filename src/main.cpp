@@ -1,7 +1,10 @@
+#include <cmath>
 #include <string>
 #include <vector>
 #include "image.cpp"
+#include "image.h"
 #include "maths.cpp"
+#include "maths.h"
 
 
 void CreateBitImage(Image &Img) {
@@ -16,6 +19,18 @@ void CreateBitImage(Image &Img) {
                 {1.0, 1.0, 1.0},
                 { 1.0, 1.0, 1.0}};
   Kernel Blur(BlurData);
+
+  std::vector<std::vector<double>>
+    SharpenData = {{ 1.0, 1.0, 1.0},
+                   {1.0, 1.0, 1.0},
+                   { 1.0, 1.0, 1.0}};
+  Kernel Sharpen(SharpenData);
+
+  std::vector<std::vector<double>>
+    RemoveNoiseData = {{ 1.0, 1.0, 1.0},
+                       {1.0, 0.0, 1.0},
+                       { 1.0, 1.0, 1.0}};
+  Kernel RemoveNoise(RemoveNoiseData);
 
   std::vector<std::vector<double>>
     GaussianBlurData = {{1, 4, 6, 4, 1},
@@ -35,23 +50,19 @@ void CreateBitImage(Image &Img) {
   Convolution2D(Img, EdgeDetect);
   Img.SaveImage("Output/EdgeDetect.png");
 
+  Convolution2D(Img, Sharpen);
+  Img.SaveImage("Output/SharpenEdge.png");
+  
   Img.ImageToEdgeBits(127);
   Img.SaveImage("Output/EdgeBits.png");
-}
-
-
+};
 
 
 int main() {
   // Gets the edge bit image
-  Image Img("Images/Spirited1.png");
-  std::cout << Img.Channels << std::endl;
+  Image Img("Images/Totoro2.png");
   Img.SaveImage("Output/Input.png");
   CreateBitImage(Img);
-
-  // Turn into a set of cubic equations
-
-
 
   
   return 0;

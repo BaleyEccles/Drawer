@@ -74,29 +74,38 @@ std::vector<Spline> CubicSpline(std::vector<Point> C) {
   // From https://en.wikipedia.org/wiki/Spline_(mathematics)#Algorithm_for_computing_natural_cubic_splines
   // Input: set of coordinates C, with |C| = n + 1
   int SizeC = C.size();
-  int n = SizeC - 1;
+  int n = SizeC;
   // Output: set splines which is composed of n 5-tuples.
 
   //     Create new array a of size n + 1 and for i = 0, …, n set a_{i}=y_{i}
   std::vector<int> a;
+  a.reserve(n + 1);
   for (int i = 0; i < n + 1; i++) {
     a.push_back(C[i].y);
   }
   //     Create new arrays b and d, each of size n.
   std::vector<int> b, d;
+  b.reserve(n);
+  d.reserve(n);
   //     Create new array h of size n and for i = 0, …, n – 1 set h_{i}=x_{i+1}-x_{i}
   std::vector<int> h;
+  h.reserve(n);
   for (int i = 0; i < n; i++) {
     h.push_back(C[i + 1].x - C[i].x);
   }
   //     Create new array α of size n and for i = 1, …, n – 1 set \alpha _{i}={\frac {3}{h_{i}}}(a_{i+1}-a_{i})-{\frac {3}{h_{i-1}}}(a_{i}-a_{i-1}).}
   std::vector<int> alpha;
+  alpha.reserve(n);
   for (int i = 1; i < n; i++) {
     double output = (3 / h[i])*(a[i+1] - a[i]) - (3 / h[i-1])*(a[i] - a[i-1]);
     alpha.push_back(output);
   }
   //     Create new arrays c, l, μ, z, each of size n + 1.
   std::vector<double> c, l, mu, z;
+  c.reserve(n + 1);
+  l.reserve(n + 1);
+  mu.reserve(n + 1);
+  z.reserve(n + 1);
   //     Set l 0 = 1 , μ 0 = z 0 = 0 {\displaystyle l_{0}=1,{\mu }_{0}=z_{0}=0\,}
   l.push_back(0.0);
   mu.push_back(0.0);
@@ -115,6 +124,7 @@ std::vector<Spline> CubicSpline(std::vector<Point> C) {
   l[n] = 1;
   z[n] = 0;
   c[n] = 0;
+
   //     For j = n – 1, n – 2, …, 0, set the following:
   for (int i = 1; i < n; i++) {
     int j = n - i;
@@ -145,5 +155,23 @@ std::vector<Spline> CubicSpline(std::vector<Point> C) {
   }
   // Output output_set
   return OutputSet;
-
 };
+
+
+double Magnitude(Point P) { return sqrt((P.x ^ 2) + (P.y ^ 2)); };
+
+Point Subtract(Point P1, Point P2) {
+  Point P;
+  P.x = P1.x - P2.x;
+  P.y = P1.y - P2.y;
+  return P;
+}
+
+Point Add(Point P1, Point P2) {
+  Point P;
+  P.x = P1.x + P2.x;
+  P.y = P1.y + P2.y;
+  return P;
+}
+
+

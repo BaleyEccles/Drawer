@@ -16,7 +16,7 @@ void Image::ImageToGreyScale() {
       Pixel += PixelVec[y][x].R;
       Pixel += PixelVec[y][x].G;
       Pixel += PixelVec[y][x].B;
-      Pixel = Pixel/3;
+      Pixel = Pixel/Channels;
         
       PixelVec[y][x].R = Pixel;
       PixelVec[y][x].G = Pixel;
@@ -50,13 +50,13 @@ void Image::ImageToEdgeBits(int Threshold) {
   
 void Image::SaveImage(std::string Name) {
   ConvertToCharArray();
-  stbi_write_png(Name.c_str(), Width, Height, 3, Data, Width * 3);
+  stbi_write_png(Name.c_str(), Width, Height, Channels, Data, Width * Channels);
 }
 void Image::ConvertToVec() {
   for(int i = 0; i < Height; i++) {
     int y = Width*Channels*i;
     std::vector<RGBData> PixelLine;
-    for(int x = 0; x < Width*Channels; x += 3) {
+    for(int x = 0; x < Width*Channels; x += Channels) {
       RGBData CurrentPixel;
       CurrentPixel.R = Data[x + y + 0];
       CurrentPixel.G = Data[x + y + 1];
@@ -65,8 +65,6 @@ void Image::ConvertToVec() {
     }
     PixelVec.push_back(PixelLine);
   }
-  //std::cout << PixelVec[0][0].R << std::endl;
-  //std::cout << (int)Data[2] << std::endl;
 }
 void Image::ConvertToCharArray() {
   for(int y = 0; y < Height; y++) {

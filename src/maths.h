@@ -22,9 +22,15 @@ void ConvertToUnsignedChar(double &Num, Kernel Knl);
 
 void Convolution2D(Image &Img, Kernel Knl);
 
+
+
 struct Point {
   int x, y;
 };
+
+double Magnitude(Point P);
+Point Subtract(Point P1, Point P2);
+Point Add(Point P1, Point P2);
 
 struct Spline {
   double a, b, c, d, x;
